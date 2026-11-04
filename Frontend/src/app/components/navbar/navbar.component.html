@@ -1,0 +1,69 @@
+<header class="sticky top-0 z-50 border-b border-white/10 bg-[#16161e]/95 backdrop-blur">
+  <nav class="mx-auto flex h-[72px] max-w-[1500px] items-center justify-between px-6 lg:px-8">
+    <a routerLink="/home" class="font-display text-3xl tracking-[0.12em] text-white">
+      <span class="text-red-600">MOVIE</span> HUB
+    </a>
+
+    <button
+      (click)="menuOpen = !menuOpen"
+      class="text-2xl md:hidden"
+      aria-label="Open menu"
+    >
+      ☰
+    </button>
+
+    <div
+      class="absolute left-0 top-[72px] w-full border-b border-white/10 bg-[#16161e] p-5 md:static md:flex md:w-auto md:items-center md:gap-10 md:border-0 md:bg-transparent md:p-0"
+      [class.hidden]="!menuOpen"
+    >
+      <a
+        routerLink="/home"
+        routerLinkActive="text-white border-red-600"
+        (click)="closeMenu()"
+        class="block border-b-2 border-transparent py-2 text-lg text-gray-400 hover:text-white"
+      >
+        Home
+      </a>
+
+      <a
+        routerLink="/movies"
+        routerLinkActive="text-white border-red-600"
+        (click)="closeMenu()"
+        class="block border-b-2 border-transparent py-2 text-lg text-gray-400 hover:text-white"
+      >
+        Movies
+      </a>
+
+      <a
+        routerLink="/favorites"
+        routerLinkActive="text-white border-red-600"
+        (click)="closeMenu()"
+        class="block border-b-2 border-transparent py-2 text-lg text-gray-400 hover:text-white"
+      >
+        Favorites
+      </a>
+    </div>
+    <!-- Account controls: regular users see an avatar; admins also see their dashboard link. -->
+    <div class="hidden items-center gap-5 md:flex">
+      @if (user$ | async; as user) {
+        @if (user.role === 'admin') {
+          <a routerLink="/admin" class="px-4 py-2 rounded-xl bg-red-600/90 text-white font-semibold text-sm hover:bg-red-600 transition shadow-lg shadow-red-600/20 flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            Admin
+          </a>
+        }
+        <a routerLink="/profile" class="grid h-11 w-11 place-items-center overflow-hidden rounded-full border-2 border-white/20 bg-red-950 font-semibold text-white transition hover:scale-105 hover:border-red-600 cursor-pointer" [attr.aria-label]="user.name">
+          @if (user.image) {
+            <img [src]="user.image" [alt]="user.name" class="h-full w-full object-cover" />
+          } @else {
+            <img [src]="defaultAvatar" [alt]="user.name" class="h-full w-full object-cover" />
+          }
+        </a>
+      } @else {
+        <a routerLink="/login" class="rounded-xl bg-red-600 px-6 py-3 font-semibold hover:bg-red-700">Sign In</a>
+      }
+    </div>
+  </nav>
+</header>
